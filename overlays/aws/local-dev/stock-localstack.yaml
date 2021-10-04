@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-localstack
+  namespace: nautible-app
+  labels:
+    app.kubernetes.io/name: stock-localstack
+    app.kubernetes.io/instance: stock-localstack
+    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/component: localstack
+    app.kubernetes.io/part-of: nautible
+    app.kubernetes.io/managed-by: manual
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: stock-localstack
+      app.kubernetes.io/component: localstack
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: stock-localstack
+        app.kubernetes.io/instance: stock-localstack
+        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/component: localstack
+        app.kubernetes.io/part-of: nautible
+        app.kubernetes.io/managed-by: manual
+    spec:
+      containers:
+      - name: stock-localstack
+        image: localstack/localstack
+        ports:
+          - containerPort: 4566
+        env:
+        - name: SERVICES
+          value: dynamodb,sqs,sns
+        - name: START_WEB
+          value: "0"
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - sh
+                - -c
+                # create profile and dynamo table and item
+                - "mkdir ~/.aws \
+                   && echo \"[profile localstack]\" >> ~/.aws/config \
+                   && echo \"region = ap-northeast-1\" >> ~/.aws/config \
+                   && echo \"output = json\" >> ~/.aws/config \
+                   && echo \"[localstack]\" >> ~/.aws/credentials \
+                   && echo \"aws_access_key_id = test-key\" >> ~/.aws/credentials \
+                   && echo \"aws_secret_access_key = test-secret\" >> ~/.aws/credentials \
+                   && for i in `seq 1 60`; do wget -Y off --no-check-certificate -O - -q http://localhost:4566/health >/dev/null && break || true; sleep 5; done \
+                   && aws dynamodb create-table --table-name Stock --attribute-definitions AttributeName=Id,AttributeType=N --key-schema AttributeName=Id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --profile localstack --endpoint-url=http://localhost:4566 \
+                   && aws dynamodb create-table --table-name StockAllocateHistory --attribute-definitions AttributeName=RequestId,AttributeType=S AttributeName=ProductId,AttributeType=N --key-schema AttributeName=RequestId,KeyType=HASH AttributeName=ProductId,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --profile localstack --endpoint-url=http://localhost:4566 \
+                   && aws dynamodb create-table --table-name Sequence --attribute-definitions AttributeName=Name,AttributeType=S --key-schema AttributeName=Name,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --profile localstack --endpoint-url=http://localhost:4566 \
+                   && aws dynamodb put-item --table-name=Sequence --item '{\"Name\": {\"S\": \"Stock\"}, \"SequenceNumber\": {\"N\": \"0\"}}' --profile localstack --endpoint-url=http://localhost:4566"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-localstack
+  namespace: nautible-app
+  labels:
+    app.kubernetes.io/name: stock-localstack
+    app.kubernetes.io/instance: stock-localstack
+    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/component: localstack
+    app.kubernetes.io/part-of: nautible
+    app.kubernetes.io/managed-by: manual
+spec:
+  selector:
+    app.kubernetes.io/instance: stock-localstack
+    app.kubernetes.io/component: localstack
+  ports:
+  - name: stock-localstack-port
+    port: 4566
+    targetPort: 4566

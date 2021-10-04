@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nautible-app-stock
+  namespace: nautible-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: nautible-app-stock
+        image: nautibledevacr.azurecr.io/nautible-app-stock:b979af6179cd0d8e58d38f7ff7e6a33dc40561d2
+        env:
+        - name: QUARKUS_PROFILE
+          value: azure-dev
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-nautible-app-cosmosdb
+              key: DATABASE_USER
+        - name: DB_PW
+          valueFrom:
+            secretKeyRef:
+              name: secret-nautible-app-cosmosdb
+              key: DATABASE_PW

@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nautible-app-stock
+  namespace: nautible-app
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: nautible-app-stock
+        env:
+        - name: QUARKUS_PROFILE
+          value: aws-local-dev
+        #- name: JAVA_VERSION
+        #  value: "11"
+        # daprのsidecarの初期化時に必要なlocalstack(sns,sqs)が利用できるまでwait
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - sh
+                - -c
+                - "for i in `seq 1 60`; do curl http://stock-localstack:4566/health >/dev/null && break || true; sleep 5; done"

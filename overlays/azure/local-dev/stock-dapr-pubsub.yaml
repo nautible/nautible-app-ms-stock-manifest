@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: stock-pubsub
+  namespace: nautible-app
+  labels:
+    app.kubernetes.io/name: stock-pubsub
+    app.kubernetes.io/instance: stock-pubsub
+    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/component: pubsub
+    app.kubernetes.io/part-of: nautible
+    app.kubernetes.io/managed-by: manual
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: stock-redis:6379
+  - name: redisPassword
+    value: password

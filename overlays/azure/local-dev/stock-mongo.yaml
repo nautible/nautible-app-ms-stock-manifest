@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-mongodb
+  namespace: nautible-app
+  labels:
+    app.kubernetes.io/name: stock-mongodb
+    app.kubernetes.io/instance: stock-mongodb
+    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/component: stock-mongodb
+    app.kubernetes.io/part-of: nautible
+    app.kubernetes.io/managed-by: manual
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: stock-mongodb
+      app.kubernetes.io/component: stock-mongodb
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: stock-mongodb
+        app.kubernetes.io/instance: stock-mongodb
+        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/component: stock-mongodb
+        app.kubernetes.io/part-of: nautible
+        app.kubernetes.io/managed-by: manual
+    spec:
+      containers:
+      - name: stock-mongodb
+        image: mongo
+        ports:
+          - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: root
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: password
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - sh
+                - -c
+                - "for i in `seq 1 60`; do mongo mongodb://root:password@localhost:27017/?authSource=admin --quiet && break || true; sleep 5; done \
+                   && mongo mongodb://root:password@localhost:27017/?authSource=admin --eval 'db.getSiblingDB(\"Common\").createCollection(\"Sequence\");' \
+                   && mongo mongodb://root:password@localhost:27017/?authSource=admin --eval 'db.getSiblingDB(\"Stock\").createCollection(\"Stock\");' \
+                   && mongo mongodb://root:password@localhost:27017/?authSource=admin --eval 'db.getSiblingDB(\"Stock\").createCollection(\"StockAllocateHistory\");' \
+                   && mongo mongodb://root:password@localhost:27017/?authSource=admin --eval 'db.getSiblingDB(\"Stock\").getCollection(\"StockAllocateHistory\").createIndex( { RequestId: 1, ProductId: 1 }, { unique: true } );' \
+                   && mongo mongodb://root:password@localhost:27017/Common?authSource=admin --eval 'db.Sequence.insertOne( { _id: \"Stock\", SequenceNumber: NumberInt(0) } );'"
+      - name: stock-mongodb-express
+        image: mongo-express
+        ports:
+          - containerPort: 8081
+        env:
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          value: root
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          value: password
+        - name: ME_CONFIG_MONGODB_SERVER
+          value: localhost
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-mongodb
+  namespace: nautible-app
+  labels:
+    app.kubernetes.io/name: stock-mongodb
+    app.kubernetes.io/instance: stock-mongodb
+    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/component: stock-mongodb
+    app.kubernetes.io/part-of: nautible
+    app.kubernetes.io/managed-by: manual
+spec:
+  selector:
+    app.kubernetes.io/instance: stock-mongodb
+    app.kubernetes.io/component: stock-mongodb
+  ports:
+  - name: stock-mongodb
+    port: 27017
+  - name: stock-mongodb-express
+    port: 8081

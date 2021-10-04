@@ -1,0 +1,7 @@
+bases:
+  - ../../../base
+patchesStrategicMerge:
+  - stock-deploy.yaml
+resources:
+  - ./stock-localstack.yaml
+  - ./stock-dapr-pubsub.yaml
