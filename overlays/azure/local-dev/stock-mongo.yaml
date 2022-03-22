@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: stock-mongodb
-  namespace: nautible-app
+  namespace: nautible-app-ms
   labels:
     app.kubernetes.io/name: stock-mongodb
     app.kubernetes.io/instance: stock-mongodb
@@ -65,7 +65,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: stock-mongodb
-  namespace: nautible-app
+  namespace: nautible-app-ms
   labels:
     app.kubernetes.io/name: stock-mongodb
     app.kubernetes.io/instance: stock-mongodb

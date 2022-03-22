@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nautible-app-ms-stock
-  namespace: nautible-app
+  namespace: nautible-app-ms
 spec:
   template:
     spec:
@@ -16,10 +16,10 @@ spec:
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: secret-nautible-app-cosmosdb
+              name: secret-nautible-app-ms-cosmosdb
               key: DATABASE_USER
         - name: DB_PW
           valueFrom:
             secretKeyRef:
-              name: secret-nautible-app-cosmosdb
+              name: secret-nautible-app-ms-cosmosdb
               key: DATABASE_PW

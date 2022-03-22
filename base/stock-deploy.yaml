@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nautible-app-ms-stock
-  namespace: nautible-app
+  namespace: nautible-app-ms
   labels:
     app.kubernetes.io/name: nautible-app-ms-stock
     app.kubernetes.io/instance: nautible-app-ms-stock
