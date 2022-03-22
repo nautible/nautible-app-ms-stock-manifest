@@ -2,14 +2,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nautible-app-stock
+  name: nautible-app-ms-stock
   namespace: nautible-app
 spec:
   template:
     spec:
       containers:
-      - name: nautible-app-stock
-        image: public.ecr.aws/nautible/nautible-app-stock:52a15ca72509c709e7cd05591600fee1cc0f8ea5
+      - name: nautible-app-ms-stock
+        image: public.ecr.aws/nautible/nautible-app-ms-stock:52a15ca72509c709e7cd05591600fee1cc0f8ea5
         env:
         - name: QUARKUS_PROFILE
           value: aws-dev

@@ -1,23 +1,23 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nautible-app-stock
+  name: nautible-app-ms-stock
   namespace: nautible-app
   labels:
-    app.kubernetes.io/name: nautible-app-stock
-    app.kubernetes.io/instance: nautible-app-stock
+    app.kubernetes.io/name: nautible-app-ms-stock
+    app.kubernetes.io/instance: nautible-app-ms-stock
     app.kubernetes.io/version: 1.0.0
     app.kubernetes.io/component: app
     app.kubernetes.io/part-of: nautible
     app.kubernetes.io/managed-by: manual
 spec:
   selector:
-    app.kubernetes.io/instance: nautible-app-stock
+    app.kubernetes.io/instance: nautible-app-ms-stock
     app.kubernetes.io/component: app
   ports:
-  - name: http-nautible-app-stock-port
+  - name: http-nautible-app-ms-stock-port
     port: 8080
     targetPort: 8080
-  - name: grpc-nautible-app-stock-port
+  - name: grpc-nautible-app-ms-stock-port
     port: 9000
     targetPort: 9000
