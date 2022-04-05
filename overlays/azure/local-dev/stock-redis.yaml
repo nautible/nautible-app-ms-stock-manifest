@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: stock-redis
-  namespace: nautible-app
+  namespace: nautible-app-ms
   labels:
     app.kubernetes.io/name: stock-redis
     app.kubernetes.io/instance: stock-redis
@@ -41,7 +41,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: stock-redis
-  namespace: nautible-app
+  namespace: nautible-app-ms
   labels:
     app.kubernetes.io/name: stock-redis
     app.kubernetes.io/instance: stock-redis

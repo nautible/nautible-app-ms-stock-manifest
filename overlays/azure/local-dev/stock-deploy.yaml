@@ -2,15 +2,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nautible-app-stock
-  namespace: nautible-app
+  name: nautible-app-ms-stock
+  namespace: nautible-app-ms
 spec:
   replicas: 1
   template:
     spec:
       containers:
-      - name: nautible-app-stock
-        image: nautibledevacr.azurecr.io/nautible-app-stock:latest
+      - name: nautible-app-ms-stock
+        image: nautibledevacr.azurecr.io/nautible-app-ms-stock:latest
         env:
         - name: QUARKUS_PROFILE
           value: azure-local-dev
