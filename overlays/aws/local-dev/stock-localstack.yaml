@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: stock-localstack
-  namespace: nautible-app
+  namespace: nautible-app-ms
   labels:
     app.kubernetes.io/name: stock-localstack
     app.kubernetes.io/instance: stock-localstack
@@ -33,7 +33,7 @@ spec:
           - containerPort: 4566
         env:
         - name: SERVICES
-          value: dynamodb,sqs,sns
+          value: dynamodb,sqs,sns,sts
         - name: START_WEB
           value: "0"
         lifecycle:
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: stock-localstack
-  namespace: nautible-app
+  namespace: nautible-app-ms
   labels:
     app.kubernetes.io/name: stock-localstack
     app.kubernetes.io/instance: stock-localstack

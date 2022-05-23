@@ -2,11 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nautible-app-stock
-  namespace: nautible-app
+  name: nautible-app-ms-stock
+  namespace: nautible-app-ms
   labels:
-    app.kubernetes.io/name: nautible-app-stock
-    app.kubernetes.io/instance: nautible-app-stock
+    app.kubernetes.io/name: nautible-app-ms-stock
+    app.kubernetes.io/instance: nautible-app-ms-stock
     app.kubernetes.io/version: 1.0.0
     app.kubernetes.io/component: app
     app.kubernetes.io/part-of: nautible
@@ -15,26 +15,26 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/instance: nautible-app-stock
+      app.kubernetes.io/instance: nautible-app-ms-stock
       app.kubernetes.io/component: app
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: nautible-app-stock
-        app.kubernetes.io/instance: nautible-app-stock
+        app.kubernetes.io/name: nautible-app-ms-stock
+        app.kubernetes.io/instance: nautible-app-ms-stock
         app.kubernetes.io/version: 1.0.0
         app.kubernetes.io/component: app
         app.kubernetes.io/part-of: nautible
         app.kubernetes.io/managed-by: manual
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/app-id: "nautible-app-stock"
+        dapr.io/app-id: "nautible-app-ms-stock"
         dapr.io/app-port: "8080"
         proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }' # https://github.com/dapr/dapr/issues/2657
     spec:
       containers:
-      - name: nautible-app-stock
-        image: public.ecr.aws/nautible/nautible-app-stock:dummy
+      - name: nautible-app-ms-stock
+        image: public.ecr.aws/nautible/nautible-app-ms-stock:dummy
         ports:
           - containerPort: 8080
           - containerPort: 9000
