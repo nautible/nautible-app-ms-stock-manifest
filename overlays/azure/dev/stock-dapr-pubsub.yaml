@@ -16,5 +16,5 @@ spec:
   metadata:
   - name: connectionString
     secretKeyRef:
-      name: secret-nautible-app-common
+      name: secret-nautible-app-ms-common
       key: SERVICE_BUS_CONNECTION_STRING
