@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: stock-localstack
-        image: localstack/localstack
+        image: localstack/localstack:0.14.4
         ports:
           - containerPort: 4566
         env:
@@ -50,7 +50,6 @@ spec:
                    && echo \"[localstack]\" >> ~/.aws/credentials \
                    && echo \"aws_access_key_id = test-key\" >> ~/.aws/credentials \
                    && echo \"aws_secret_access_key = test-secret\" >> ~/.aws/credentials \
-                   && for i in `seq 1 60`; do wget -Y off --no-check-certificate -O - -q http://localhost:4566/health >/dev/null && break || true; sleep 5; done \
                    && aws dynamodb create-table --table-name Stock --attribute-definitions AttributeName=Id,AttributeType=N --key-schema AttributeName=Id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --profile localstack --endpoint-url=http://localhost:4566 \
                    && aws dynamodb create-table --table-name StockAllocateHistory --attribute-definitions AttributeName=RequestId,AttributeType=S AttributeName=ProductId,AttributeType=N --key-schema AttributeName=RequestId,KeyType=HASH AttributeName=ProductId,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --profile localstack --endpoint-url=http://localhost:4566 \
                    && aws dynamodb create-table --table-name Sequence --attribute-definitions AttributeName=Name,AttributeType=S --key-schema AttributeName=Name,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --profile localstack --endpoint-url=http://localhost:4566 \
