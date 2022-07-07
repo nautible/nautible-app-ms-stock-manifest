@@ -16,13 +16,3 @@ spec:
           value: azure-local-dev
         #- name: JAVA_VERSION
         #  value: "11"
-        # daprのsidecarの初期化時に必要なredisが利用できるまでwait.redisにはヘルスチェック用のhttp endpointはない。
-        # dnsの解決ができることまでを無理やりチェックしているので、うまく動かない場合は手動で事前にredisを起動するか、sleepさせる。
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - sh
-                - -c
-                # exit code 8 = The server sent data curl could not parse = ERR wrong number of arguments for 'get' command
-                - "for i in `seq 1 10`; do curl -I -m 2 http://stock-redis:6379/ -o /dev/null || if [ $? == 8 ];then break; else true;fi; sleep 5; done"
