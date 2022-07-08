@@ -48,7 +48,8 @@ spec:
                    && mongo mongodb://root:password@localhost:27017/?authSource=admin --eval 'db.getSiblingDB(\"Stock\").createCollection(\"Stock\");' \
                    && mongo mongodb://root:password@localhost:27017/?authSource=admin --eval 'db.getSiblingDB(\"Stock\").createCollection(\"StockAllocateHistory\");' \
                    && mongo mongodb://root:password@localhost:27017/?authSource=admin --eval 'db.getSiblingDB(\"Stock\").getCollection(\"StockAllocateHistory\").createIndex( { RequestId: 1, ProductId: 1 }, { unique: true } );' \
-                   && mongo mongodb://root:password@localhost:27017/Common?authSource=admin --eval 'db.Sequence.insertOne( { _id: \"Stock\", SequenceNumber: NumberInt(0) } );'"
+                   && mongo mongodb://root:password@localhost:27017/Common?authSource=admin --eval 'db.Sequence.insertOne( { _id: \"Stock\", SequenceNumber: NumberInt(0) } );' \
+                   && mongo mongodb://root:password@localhost:27017/Common?authSource=admin --eval 'db.Sequence.insertOne( { _id: \"StockAllocateHistory\", SequenceNumber: NumberInt(0) } );'"
       - name: stock-mongodb-express
         image: mongo-express
         ports:

@@ -1,0 +1,3 @@
+resources:
+  - stock-mongo.yaml
+  - stock-redis.yaml

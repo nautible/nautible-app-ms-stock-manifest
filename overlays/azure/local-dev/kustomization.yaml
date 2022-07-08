@@ -3,6 +3,4 @@ bases:
 patchesStrategicMerge:
   - stock-deploy.yaml
 resources:
-  - stock-mongo.yaml
-  - stock-redis.yaml
   - stock-dapr-pubsub.yaml

@@ -15,11 +15,3 @@ spec:
           value: aws-local-dev
         #- name: JAVA_VERSION
         #  value: "11"
-        # daprのsidecarの初期化時に必要なlocalstack(sns,sqs)が利用できるまでwait
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - sh
-                - -c
-                - "for i in `seq 1 60`; do curl http://stock-localstack:4566/health >/dev/null && break || true; sleep 5; done"
