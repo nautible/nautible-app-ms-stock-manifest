@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: nautible-app-ms-stock
-        image: public.ecr.aws/nautible/nautible-app-ms-stock:eac2b2586370a346e451ef771c1818302e31eccf
+        image: public.ecr.aws/nautible/nautible-app-ms-stock:83cf37e5f588f1dc29272ee78d23b6c9140c6e43
         env:
         - name: QUARKUS_PROFILE
           value: aws-dev
