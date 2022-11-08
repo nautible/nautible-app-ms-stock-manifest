@@ -15,4 +15,4 @@ spec:
   version: v1
   metadata:
   - name: region
-    value: ap-northeast-1
+    value: us-east-1

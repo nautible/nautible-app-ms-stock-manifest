@@ -14,4 +14,4 @@ spec:
         - name: QUARKUS_PROFILE
           value: aws-dev
         - name: QUARKUS_DYNAMODB_AWS_REGION
-          value: ap-northeast-1
+          value: us-east-1
