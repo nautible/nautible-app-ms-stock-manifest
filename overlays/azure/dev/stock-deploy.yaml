@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: nautible-app-ms-stock
-        image: nautibledevacr.azurecr.io/nautible-app-ms-stock:d6d9061a903160d880a031c8c078f3b87334196e
+        image: nautibledevacr.azurecr.io/nautible-app-ms-stock:8fd7f306371491ec33614a7a541083098871e6f4
         env:
         - name: QUARKUS_PROFILE
           value: azure-dev
