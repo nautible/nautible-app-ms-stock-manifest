@@ -31,6 +31,7 @@ spec:
         dapr.io/app-id: "nautible-app-ms-stock"
         dapr.io/app-port: "8080"
         proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }' # https://github.com/dapr/dapr/issues/2657
+        instrumentation.opentelemetry.io/inject-java: 'true'
     spec:
       containers:
       - name: nautible-app-ms-stock
